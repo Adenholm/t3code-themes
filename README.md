@@ -1,6 +1,6 @@
 # Cozy pixel-art themes for T3 Code
 
-Two animated themes for [T3 Code](https://github.com/pingdotgg/t3code). Each one shows a small log cabin in a snowy forest at night behind your chat. The scene is drawn as pixel art.
+Two animated themes for [T3 Code](https://github.com/pingdotgg/t3code). Each one shows a small log cabin in a snowy forest at night behind the whole app. The scene is drawn as pixel art. It also shows on the new chat screen, and a soft blurred version shows through the sidebar.
 
 ## Pixelstugan
 
@@ -10,6 +10,8 @@ A cabin in the woods with string lights, glowing windows, chimney smoke, driftin
 
 ![Pixelstugan with a chat open](screenshots/pixelstugan-chat.png)
 
+![Pixelstugan on the new chat screen](screenshots/pixelstugan-new-chat.png)
+
 ## Julstugan
 
 The same cabin dressed for Christmas. It has a lit spruce with a star, an advent candlestick in the window, red paper stars, a wreath on the door, a small tomte with a lantern and a snowman. The colors are warmer, and buttons and your own messages are Christmas red.
@@ -17,6 +19,8 @@ The same cabin dressed for Christmas. It has a lit spruce with a star, an advent
 ![Julstugan](screenshots/julstugan.png)
 
 ![Julstugan with a chat open](screenshots/julstugan-chat.png)
+
+![Julstugan on the new chat screen](screenshots/julstugan-new-chat.png)
 
 ## How to install
 

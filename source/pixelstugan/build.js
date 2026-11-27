@@ -440,10 +440,13 @@ fs.writeFileSync(path.join(OUT, 'overlay.svg'), overlay);
 
 // ---------- 10. CSS + theme ----------
 const enc = (svg) => 'url("data:image/svg+xml,' + svg.replace(/\s*\n\s*/g, ' ').replace(/%/g, '%25').replace(/#/g, '%23').replace(/"/g, "'") + '")';
-const POS = '62% 100%/cover no-repeat';
+const POS = '30% 100%/auto max(100%,74.67vw) no-repeat';
 const css = `/* Pixelstugan — pixel-art cottage in a snowy night forest. Base image: pixelstugan.png beside this theme. */
-.dark [data-workspace-area="conversation"]{position:relative;isolation:isolate;overflow:clip;background:#0b161b!important}
-.dark [data-workspace-area="conversation"]::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;image-rendering:pixelated;background:${enc(overlay)} ${POS},var(--theme-background-image) ${POS}}
+html.dark{background:#0b161b!important}
+html.dark body,html.dark #root,.dark [data-slot="sidebar-wrapper"],.dark main[data-slot="sidebar-inset"]{background:transparent!important}
+html.dark body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;image-rendering:pixelated;background:${enc(overlay)} ${POS},var(--theme-background-image) ${POS}}
+.dark [data-slot="sidebar-inner"]{background:rgba(7,15,19,.5)!important;-webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2)}
+.dark [data-workspace-area="conversation"]{position:relative;isolation:isolate;overflow:clip;background:transparent!important}
 .dark [data-workspace-area="conversation"]::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,transparent calc(50% - 32rem),rgba(3,7,9,.8) calc(50% - 24rem),rgba(3,7,9,.8) calc(50% + 24rem),transparent calc(50% + 32rem))}
 .dark .messages-timeline-scroll{background:transparent!important}
 .dark [data-slot="composer-host"]{background:rgba(6,13,16,.86)!important;box-shadow:0 0 0 1px rgba(255,190,110,.16),0 10px 30px rgba(0,0,0,.4)!important}
@@ -452,7 +455,7 @@ const css = `/* Pixelstugan — pixel-art cottage in a snowy night forest. Base 
 .dark [data-chat-header]{background:rgba(5,11,14,.7)!important;backdrop-filter:blur(6px)}`;
 
 const colors = {
-  canvas: '#0b161b', chrome: '#08121a', toolbar: '#08121a', toolbarForeground: '#f1e4cf', toolbarBorder: '#1a2a30',
+  canvas: '#0b161b59', chrome: '#08121a', toolbar: '#08121a', toolbarForeground: '#f1e4cf', toolbarBorder: '#1a2a30',
   toolbarControl: '#13222a', toolbarControlForeground: '#f1e4cf', toolbarControlHover: '#1b2e36',
   surface: '#0d1a20', surfaceRaised: '#132329', surfaceOverlay: '#182a31', text: '#f1e6d4', textMuted: '#9c9584',
   border: '#22363d', input: '#2b444c', focus: '#f0a95a', accent: '#f0a95a', accentForeground: '#1b1006',
@@ -498,14 +501,16 @@ console.log('share css chars', shareCss.length);
 fs.writeFileSync(path.join(OUT, 'preview.html'), `<!doctype html><html class="dark"><head><meta charset="utf-8"><style>
 :root{--theme-background-image:url(pixelstugan.png)}
 html,body{margin:0;height:100%;font:15px/1.5 system-ui;color:${colors.text};background:${colors.canvas}}
-.app{display:flex;height:100%}.side{width:260px;background:${colors.sidebar};border-right:1px solid ${colors.sidebarBorder}}
-[data-workspace-area="conversation"]{flex:1;display:flex;flex-direction:column}
+.app{display:flex;height:100%}.side{width:260px;padding:52px 12px;box-sizing:border-box;background:${colors.sidebar};border-right:1px solid ${colors.sidebarBorder};color:${colors.sidebarForeground};font-size:13px}.side div{padding:6px 8px;border-radius:6px}main{flex:1;display:flex;background:${colors.canvas}}
+.home{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:var(--background)}
+[data-workspace-area="conversation"]{flex:1;display:flex;flex-direction:column}html{--background:${colors.canvas}}
 .messages-timeline-scroll{flex:1;padding:40px 0}.col{max-width:44rem;margin:0 auto;padding:0 16px}
 [data-user-message-bubble]{margin-left:auto;width:fit-content;padding:10px 14px;border-radius:14px}
 [data-slot="composer-host"]{margin:0 auto 20px;max-width:44rem;height:110px;border-radius:18px;width:calc(100% - 32px)}
-</style><link rel="stylesheet" href="pixelstugan.css"></head><body><div class="app"><div class="side"></div><div data-workspace-area="conversation">
+</style><link rel="stylesheet" href="pixelstugan.css"></head><body><div class="app" data-slot="sidebar-wrapper"><div class="side" data-slot="sidebar-inner"><div>Mysigt tema</div><div style="background:${colors.sidebarRowSelected}">Julpynt till stugan</div><div>Fixa buggen i appen</div><div>Ny landningssida</div></div><main data-slot="sidebar-inset"><div data-workspace-area="conversation">
 <div data-chat-header style="height:44px"></div><div class="messages-timeline-scroll"><div class="col">
 <div data-user-message-bubble>Kan du hjälpa mig med en sak?</div>
 <div class="chat-markdown"><p>Absolut! Här är ett längre svar så att man ser hur texten läses ovanpå bakgrunden. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
-</div></div><div data-slot="composer-host"></div></div></div></body></html>`);
+</div></div><div data-slot="composer-host"></div></div></main></div></body></html>`);
+fs.writeFileSync(path.join(OUT, 'preview-home.html'), fs.readFileSync(path.join(OUT, 'preview.html'), 'utf8').replace(/<div data-workspace-area="conversation">[\s\S]*<\/main>/, '<div class="home"><div style="font-size:22px;font-weight:600;text-shadow:0 1px 3px #000">Vad ska vi bygga?</div><div data-slot="composer-host" style="margin:0;max-width:40rem"></div></div></main>'));
 console.log('css chars', css.length, 'png bytes', png.length, 'bulbs', bi);
