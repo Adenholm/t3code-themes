@@ -82,7 +82,7 @@ for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
 // ---------- 2. far forest ----------
 for (let i = 0; i < 46; i++) {
   const x0 = R(-5, W), w = Math.round(R(2, 5)), lean = R(-0.03, 0.03);
-  for (let y = 0; y < GROUND(x0) - 3; y++) for (let k = 0; k < w; k++) {
+  for (let y = 0; y < GROUND(x0) + 4; y++) for (let k = 0; k < w; k++) {
     const x = x0 + k + lean * y;
     const fogT = 0.25 + 0.5 * Math.exp(-(((x - 205) / 90) ** 2));
     put(x, y, mix(mix(C.farTrunk, hex('#1f3138'), k / w), get(Math.round(clamp(x, 0, W - 1)), y), fogT), 1);
